@@ -1,4 +1,5 @@
 # Sentiment Analysis Using More than 150K Tweets
+By: KeichiTS
 
 ## 1 - Introduction
 
@@ -35,8 +36,7 @@ To create the code, we use:
 
 ## 3 - Implementation
 
-Primeiramente, importamos e utilizamos a biblioteca pandas para ler o csv diretamente da pasta local e armazenar em um dataframe bem estruturado. Também é necessário nessa etapa tratar os NA's presentes na amostra. Para esse caso, decidiu-se por apenas excluir as linhas com informações faltantes. 
-
+First, we import and use the pandas library to read the CSV directly from the local folder and store it in a well-structured dataframe. It is also necessary at this stage to handle the NA values present in the sample. In this case, it was decided to simply remove the rows with missing information.
 ```
 import pandas as pd 
 
@@ -44,7 +44,8 @@ df = pd.read_csv('Twitter_Data.csv')
 df = df.dropna()
 ```
 
-A estrutura do dataframe fica assim, onde tempos o texto do tweet e qual o sentimento atribuido para ele, onde -1 é negativo, 0 é neutro e 1 é positivo:
+The structure of the dataframe is as follows, where we have the text of the tweet and the assigned sentiment, where -1 is negative, 0 is neutral, and 1 is positive:
+
 
 ```
                                           clean_text  category 
@@ -56,23 +57,23 @@ A estrutura do dataframe fica assim, onde tempos o texto do tweet e qual o senti
 ```
 
 
-Após isso, já podemos realizar a análise de sentimentos para todos os tweets do dataset. Assim sendo, o código para importar o textblop, criar uma função para iterar todas as linhas e fazer a análise de sentimentos para todos os tweets, temos: 
+After that, we can perform the sentiment analysis for all the tweets in the dataset. Therefore, the code to import TextBlob, create a function to iterate through all the rows, and perform sentiment analysis for all the tweets is as follows:
 
 ```
 
 from textblob import TextBlob
 
 
-def analise_textblop(texto):
-    blob = TextBlob(texto)
+def analysis(text):
+    blob = TextBlob(text)
     sentiment = blob.sentiment
     return sentiment.polarity
 
-df['new_review_textblop'] = df['clean_text'].apply(analise_textblop)
+df['new_review_textblop'] = df['clean_text'].apply(analysis)
 
 ```
 
-E com isso, o dataframe agora possui uma nova coluna, "new_sentiment_textblop", que foi :
+And with this, the dataframe now has a new column, "new_sentiment_textblob," which was:
 
 ```
                                                clean_text  ...  new_review_textblop
@@ -83,27 +84,19 @@ E com isso, o dataframe agora possui uma nova coluna, "new_sentiment_textblop", 
 4       answer who among these the most powerful world...  ...             0.400000
 ```
 
-No entanto, os valores estão em float e precisam de um tratamento adicional para que tenhamos -1, 0 ou 1, que indicam sentimento negativo, neutro ou positivo. Fazendo valores menores que -.2 serem sentimentos negativos, entre -.2 e .2 sentimentos neutros e acima de .2 positivos: 
-
+However, the values are in float and need additional processing so that we have -1, 0, or 1, which indicate negative, neutral, or positive sentiment. The rule is as follows: values less than -0.2 are considered negative sentiment, values between -0.2 and 0.2 are neutral sentiment, and values above 0.2 are positive sentiment.
 ```
-def analise2(score):
+def score_analysis(score):
   if score >= .2:
     return 1
   elif score < .2 and score > -.2:
     return 0
   return -1
 
-def analise2_text_blop(score):
-  if score >= .2:
-    return 1
-  elif score < .2 and score > -.2:
-    return 0
-  return -1
-
-df['new_sentiment_textblop'] = df['new_review_textblop'].apply(analise2_text_blop)
+df['new_sentiment_textblop'] = df['new_review_textblop'].apply(score_analysis)
 ```
 
-Agora tempos uma quarta coluna no dataframe onde temos apenas 3 valores indicando qual sentimento está atribuido para cada tweet:
+Now we have a fourth column in the dataframe, where we have only 3 values indicating the sentiment assigned to each tweet:
 
 ```
                                                clean_text  ...  new_sentiment_textblop
@@ -114,7 +107,7 @@ Agora tempos uma quarta coluna no dataframe onde temos apenas 3 valores indicand
 4       answer who among these the most powerful world...  ...                       1
 ```
 
-Agora podemos comparar a acurácia do modelo utilizando o textblob com os valores de referência já inclusos no dataset. Para isso, vamos importar o accuracy_score do sci-kit learn e comparar as colunas "category" e "new_sentiment_textblop"
+Now we can compare the accuracy of the model using TextBlob with the reference values already included in the dataset. To do this, we will import the accuracy_score from scikit-learn and compare the "category" and "new_sentiment_textblob" columns.
 
 ```
 from sklearn.metrics import accuracy_score
@@ -123,24 +116,22 @@ acuracia_textblop = accuracy_score(df['category'], df['new_sentiment_textblop'])
 
 ```
 
-Que retorna o valor: 
-
+Which returns the value:
 ```
 0.7055329541201087
 ```
 
 ### 4 - Results and Conclusions
 
-Sendo assim, o modelo possui alta acurácia em relação aos valores de referência do dataset. Ou seja, apesar de ser simples, vemos que com o uso de poucas bibliotecas utilizando Python, conseguimos processar milhares de textos e fazer uma análise de sentimento bem acertiva automaticamente. 
+Therefore, the model has high accuracy in relation to the reference values in the dataset. In other words, despite being simple, we can see that with the use of just a few libraries in Python, we are able to process thousands of texts and perform an accurate sentiment analysis automatically.
 
-Há algumas melhorias utilizando NLP que podem ser úteis para avaliar uma grande quantidade de conteúdo, tal como procurar termos chaves para um determinado assunto e fazer análise de subjetividade para avaliar se os são tendenciosos ou não. 
+There are some improvements using NLP that could be useful for evaluating a large amount of content, such as searching for key terms related to a specific topic and performing subjectivity analysis to assess whether the content is biased or not.
 
-### 5 - Some Interest Links
+### 5 - Some Interesting Links
 
-A documentação do [textblop](https://textblob.readthedocs.io/en/dev/#) é uma excelente fonte para aprender um pouco mais sobre NLP. Além disso, plataformas como o [Kaggle](kaggle.com) oferecem uma grande variedade de dados para estudo e treinamento. 
+The documentation of [textblob](https://textblob.readthedocs.io/en/dev/#) is an excellent resource for learning more about NLP. Additionally, platforms like [Kaggle](kaggle.com) offer a wide variety of datasets for study and training.
 
-Como adicional que não cabem no escopo desse texto, deixo aqui a recomendação de 3 textos que discutem muito bem a utilização e construção de NLP: 
+As an addition that doesn't fit within the scope of this text, here are three recommendations for articles that discuss the use and development of NLP in great detail:
 - [What is sentiment analysis?](https://www.ibm.com/topics/sentiment-analysis)
 - [What is Sentiment Analysis? - AWS](https://aws.amazon.com/what-is/sentiment-analysis/#:~:text=Sentiment%20analysis%20is%20the%20process,social%20media%20comments%2C%20and%20reviews.)
 - [Sentiment Analysis in Python-81% accuracy](https://medium.com/@liangnguyen612/sentiment-analysis-in-python-81-accuracy-ab5d694b7ef8)
-
