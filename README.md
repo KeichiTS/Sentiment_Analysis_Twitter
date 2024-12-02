@@ -35,4 +35,100 @@ To create the code, we use:
 
 ## 3 - Implementation
 
-Primeiramente, importamos e utilizamos a biblioteca pandas para extrair 
+Primeiramente, importamos e utilizamos a biblioteca pandas para ler o csv diretamente da pasta local e armazenar em um dataframe bem estruturado. Também é necessário nessa etapa tratar os NA's presentes na amostra. Para esse caso, decidiu-se por apenas excluir as linhas com informações faltantes. 
+
+```
+import pandas as pd 
+
+df = pd.read_csv('Twitter_Data.csv')
+df = df.dropna()
+```
+
+A estrutura do dataframe fica assim, onde tempos o texto do tweet e qual o sentimento atribuido para ele, onde -1 é negativo, 0 é neutro e 1 é positivo:
+
+```
+                                          clean_text  category 
+0  when modi promised “minimum government maximum...      -1.0
+1  talk all the nonsense and continue all the dra...       0.0
+2  what did just say vote for modi  welcome bjp t...       1.0
+3  asking his supporters prefix chowkidar their n...       1.0
+4  answer who among these the most powerful world...       1.0
+```
+
+
+Após isso, já podemos realizar a análise de sentimentos para todos os tweets do dataset. Assim sendo, o código para importar o textblop, criar uma função para iterar todas as linhas e fazer a análise de sentimentos para todos os tweets, temos: 
+
+```
+
+from textblob import TextBlob
+
+
+def analise_textblop(texto):
+    blob = TextBlob(texto)
+    sentiment = blob.sentiment
+    return sentiment.polarity
+
+df['new_review_textblop'] = df['clean_text'].apply(analise_textblop)
+
+```
+
+E com isso, o dataframe agora possui uma nova coluna, "new_sentiment_textblop", que foi :
+
+```
+                                               clean_text  ...  new_review_textblop
+0       when modi promised “minimum government maximum...  ...            -0.300000
+1       talk all the nonsense and continue all the dra...  ...             0.000000
+2       what did just say vote for modi  welcome bjp t...  ...             0.483333
+3       asking his supporters prefix chowkidar their n...  ...             0.150000
+4       answer who among these the most powerful world...  ...             0.400000
+```
+
+No entanto, os valores estão em float e precisam de um tratamento adicional para que tenhamos -1, 0 ou 1, que indicam sentimento negativo, neutro ou positivo. Fazendo valores menores que -.2 serem sentimentos negativos, entre -.2 e .2 sentimentos neutros e acima de .2 positivos: 
+
+```
+def analise2(score):
+  if score >= .2:
+    return 1
+  elif score < .2 and score > -.2:
+    return 0
+  return -1
+
+def analise2_text_blop(score):
+  if score >= .2:
+    return 1
+  elif score < .2 and score > -.2:
+    return 0
+  return -1
+
+df['new_sentiment_textblop'] = df['new_review_textblop'].apply(analise2_text_blop)
+```
+
+Agora tempos uma quarta coluna no dataframe onde temos apenas 3 valores indicando qual sentimento está atribuido para cada tweet:
+
+```
+                                               clean_text  ...  new_sentiment_textblop
+0       when modi promised “minimum government maximum...  ...                      -1
+1       talk all the nonsense and continue all the dra...  ...                       0
+2       what did just say vote for modi  welcome bjp t...  ...                       1
+3       asking his supporters prefix chowkidar their n...  ...                       0
+4       answer who among these the most powerful world...  ...                       1
+```
+
+Agora podemos comparar a acurácia do modelo utilizando o textblob com os valores de referência já inclusos no dataset. Para isso, vamos importar o accuracy_score do sci-kit learn e comparar as colunas "category" e "new_sentiment_textblop"
+
+```
+from sklearn.metrics import accuracy_score
+
+acuracia_textblop = accuracy_score(df['category'], df['new_sentiment_textblop'])
+
+```
+
+Que retorna o valor: 
+
+```
+0.7055329541201087
+```
+
+### 4 - Results and Conclusions
+
+Sendo assim, o modelo possui acurácia de 70% em relação aos valores de referência do dataset. 
