@@ -131,4 +131,16 @@ Que retorna o valor:
 
 ### 4 - Results and Conclusions
 
-Sendo assim, o modelo possui acurácia de 70% em relação aos valores de referência do dataset. 
+Sendo assim, o modelo possui alta acurácia em relação aos valores de referência do dataset. Ou seja, apesar de ser simples, vemos que com o uso de poucas bibliotecas utilizando Python, conseguimos processar milhares de textos e fazer uma análise de sentimento bem acertiva automaticamente. 
+
+Há algumas melhorias utilizando NLP que podem ser úteis para avaliar uma grande quantidade de conteúdo, tal como procurar termos chaves para um determinado assunto e fazer análise de subjetividade para avaliar se os são tendenciosos ou não. 
+
+### 5 - Some Interest Links
+
+A documentação do [textblop](https://textblob.readthedocs.io/en/dev/#) é uma excelente fonte para aprender um pouco mais sobre NLP. Além disso, plataformas como o [Kaggle](kaggle.com) oferecem uma grande variedade de dados para estudo e treinamento. 
+
+Como adicional que não cabem no escopo desse texto, deixo aqui a recomendação de 3 textos que discutem muito bem a utilização e construção de NLP: 
+- [What is sentiment analysis?](https://www.ibm.com/topics/sentiment-analysis)
+- [What is Sentiment Analysis? - AWS](https://aws.amazon.com/what-is/sentiment-analysis/#:~:text=Sentiment%20analysis%20is%20the%20process,social%20media%20comments%2C%20and%20reviews.)
+- [Sentiment Analysis in Python-81% accuracy](https://medium.com/@liangnguyen612/sentiment-analysis-in-python-81-accuracy-ab5d694b7ef8)
+
