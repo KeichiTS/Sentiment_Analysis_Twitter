@@ -1,6 +1,5 @@
 # Sentiment Analysis Using More than 150K Tweets
 By: KeichiTS
-
 ## 1 - Introduction
 
 Sentiment analysis involves assessing opinions through natural language processing, text analysis, and statistical methods. Many companies now monitor customer emotions—what they express, how they express it, and what their words imply. Rather than manually interpreting each word to determine sentiment, advancements in machine learning have made it possible for machines to analyze news or comments and quickly identify the sentiment or meaning behind a sentence.
