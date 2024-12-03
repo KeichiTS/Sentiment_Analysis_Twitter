@@ -128,7 +128,7 @@ There are some improvements using NLP that could be useful for evaluating a larg
 
 ### 5 - Some Interesting Links
 
-The documentation of [textblob](https://textblob.readthedocs.io/en/dev/#) is an excellent resource for learning more about NLP. Additionally, platforms like [Kaggle](www.kaggle.com) offer a wide variety of datasets for study and training.
+The documentation of [textblob](https://textblob.readthedocs.io/en/dev/#) is an excellent resource for learning more about NLP. Additionally, platforms like [Kaggle](https://www.kaggle.com/) offer a wide variety of datasets for study and training.
 
 As an addition that doesn't fit within the scope of this text, here are three recommendations for articles that discuss the use and development of NLP in great detail:
 - [What is sentiment analysis?](https://www.ibm.com/topics/sentiment-analysis)
